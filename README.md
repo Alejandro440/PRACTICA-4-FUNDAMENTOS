@@ -85,13 +85,13 @@ mv data_loading.html cleaning.html visualization.html analysis.html doc/
 Para ejecutar los tests:
 
 ```bash
-pytest
+python -m pytest -q
 ```
 
 Para cobertura (requiere `pytest-cov`):
 
 ```bash
-pytest --cov=src --cov-report=term-missing
+python -m pytest --cov=src --cov-report=term-missing
 ```
 
 ## Linter
