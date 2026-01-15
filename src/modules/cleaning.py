@@ -75,7 +75,7 @@ def _ensure_columns(df: pd.DataFrame, columns: List[str]) -> None:
         raise ValueError(f"Faltan columnas requeridas: {missing}")
 
 
-def group_by_branch(df: pd.DataFrame, value_column: str) -> pd.DataFrame:
+def group_by_branch(df: pd.DataFrame, value_column: str) -> tuple[pd.DataFrame, list[str]]:
     """Group by branch and compute mean for the requested metric.
 
     Args:
@@ -83,15 +83,14 @@ def group_by_branch(df: pd.DataFrame, value_column: str) -> pd.DataFrame:
         value_column: Metric column to aggregate.
 
     Returns:
-        Aggregated dataframe.
+        Tuple with the aggregated dataframe and the group-by columns used.
     """
-    _ensure_columns(df, GROUP_COLUMNS + [value_column])
-    grouped = (
-        df.groupby(GROUP_COLUMNS, as_index=False)[value_column]
-        .mean()
-        .rename(columns={value_column: value_column})
-    )
-    return grouped
+    group_cols = [col for col in GROUP_COLUMNS if col in df.columns]
+    print(f"Columnas detectadas: {list(df.columns)}")
+    print(f"Columnas de agrupación usadas: {group_cols}")
+    _ensure_columns(df, group_cols + [value_column])
+    grouped = df.groupby(group_cols, dropna=False, as_index=False)[value_column].mean()
+    return grouped, group_cols
 
 
 def merge_datasets(rendiment_df: pd.DataFrame, abandono_df: pd.DataFrame) -> pd.DataFrame:
@@ -132,7 +131,20 @@ def prepare_datasets(
     )
     abandono_df = drop_unnecessary_columns(abandono_df, common_drop)
 
-    rendiment_grouped = group_by_branch(rendiment_df, "Taxa rendiment")
-    abandono_grouped = group_by_branch(abandono_df, "% Abandonament a primer curs")
+    rendiment_grouped, rendiment_group_cols = group_by_branch(
+        rendiment_df, "Taxa rendiment"
+    )
+    abandono_grouped, abandono_group_cols = group_by_branch(
+        abandono_df, "% Abandonament a primer curs"
+    )
 
-    return merge_datasets(rendiment_grouped, abandono_grouped)
+    merge_keys = [col for col in rendiment_group_cols if col in abandono_group_cols]
+    print(f"Claves de merge usadas: {merge_keys}")
+    if not merge_keys:
+        raise ValueError(
+            "No hay claves comunes para fusionar los datasets. "
+            "Revisa las columnas disponibles."
+        )
+
+    merged = pd.merge(rendiment_grouped, abandono_grouped, on=merge_keys, how="inner")
+    return merged

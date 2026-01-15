@@ -46,6 +46,12 @@ Ejecutar todos los ejercicios:
 python src/main.py
 ```
 
+También puedes usar el wrapper en la raíz:
+
+```bash
+python main.py
+```
+
 Ejecutar ejercicios de forma progresiva (por ejemplo, hasta el 3):
 
 ```bash
