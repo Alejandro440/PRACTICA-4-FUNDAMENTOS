@@ -4,10 +4,10 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from modules.analysis import analyze_dataset
-from modules.cleaning import prepare_datasets
-from modules.data_loading import explore_dataset, load_dataset
-from modules.visualization import plot_time_series
+from src.modules.analysis import analyze_dataset
+from src.modules.cleaning import prepare_datasets
+from src.modules.data_loading import explore_dataset, load_dataset
+from src.modules.visualization import plot_time_series
 
 
 def run_exercise_1(data_dir: Path, dataset_path: Path | None = None) -> None:
