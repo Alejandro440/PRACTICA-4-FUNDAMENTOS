@@ -6,6 +6,7 @@ from pathlib import Path
 
 from src.modules.analysis import analyze_dataset
 from src.modules.cleaning import prepare_datasets
+from src.modules.config import STUDENT_NAME, STUDENT_SLUG
 from src.modules.data_loading import explore_dataset, load_dataset
 from src.modules.visualization import plot_time_series
 
@@ -21,7 +22,7 @@ def run_exercise_2(data_dir: Path) -> Path:
     rendiment_df = load_dataset(data_dir / "rendiment_estudiants.xlsx")
     abandono_df = load_dataset(data_dir / "taxa_abandonament.xlsx")
     merged_df = prepare_datasets(rendiment_df, abandono_df)
-    output_path = data_dir / "src" / "report" / "merged_dataset.csv"
+    output_path = data_dir / "src" / "report" / f"merged_dataset_{STUDENT_SLUG}.csv"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     merged_df.to_csv(output_path, index=False)
     print(f"Dataset fusionado guardado en: {output_path}")
@@ -33,7 +34,7 @@ def run_exercise_3(data_dir: Path) -> Path:
     rendiment_df = load_dataset(data_dir / "rendiment_estudiants.xlsx")
     abandono_df = load_dataset(data_dir / "taxa_abandonament.xlsx")
     merged_df = prepare_datasets(rendiment_df, abandono_df)
-    output_path = data_dir / "src" / "img" / "evolucion_nombre_alumno.png"
+    output_path = data_dir / "src" / "img" / f"evolucion_{STUDENT_SLUG}.png"
     plot_time_series(merged_df, output_path)
     print(f"Gráfico guardado en: {output_path}")
     return output_path
@@ -44,8 +45,14 @@ def run_exercise_4(data_dir: Path) -> Path:
     rendiment_df = load_dataset(data_dir / "rendiment_estudiants.xlsx")
     abandono_df = load_dataset(data_dir / "taxa_abandonament.xlsx")
     merged_df = prepare_datasets(rendiment_df, abandono_df)
-    output_path = data_dir / "src" / "report" / "analisi_estadistic.json"
-    analyze_dataset(merged_df, output_path)
+    output_path = data_dir / "src" / "report" / f"analisi_estadistic_{STUDENT_SLUG}.json"
+    analyze_dataset(
+        merged_df,
+        output_path,
+        student_name=STUDENT_NAME,
+        student_id=STUDENT_SLUG,
+        source_files=["rendiment_estudiants.xlsx", "taxa_abandonament.xlsx"],
+    )
     print(f"Informe guardado en: {output_path}")
     return output_path
 
@@ -79,6 +86,9 @@ def main() -> None:
     repo_root = Path(__file__).resolve().parents[1]
 
     exercise_limit = args.exercise or 4
+
+    print(f"Alumno: {STUDENT_NAME}")
+    print("Proyecto: PEC4 Fundamentos de Ciencia de Datos")
 
     if exercise_limit >= 1:
         run_exercise_1(repo_root, args.dataset)

@@ -9,12 +9,21 @@ import pandas as pd
 from scipy.stats import linregress, pearsonr
 
 
-def analyze_dataset(merged_df: pd.DataFrame, output_path: Path) -> dict:
+def analyze_dataset(
+    merged_df: pd.DataFrame,
+    output_path: Path,
+    student_name: str,
+    student_id: str,
+    source_files: list[str],
+) -> dict:
     """Generate a statistical analysis report and save it to JSON.
 
     Args:
         merged_df: Cleaned and merged dataframe.
         output_path: Output path for the JSON report.
+        student_name: Full name of the student.
+        student_id: Identifier used in filenames.
+        source_files: Source files used for the analysis.
 
     Returns:
         Dictionary containing the analysis results.
@@ -32,6 +41,10 @@ def analyze_dataset(merged_df: pd.DataFrame, output_path: Path) -> dict:
             "fecha_analisis": datetime.now().strftime("%Y-%m-%d"),
             "num_registros": len(merged_df),
             "periodo_temporal": sorted(merged_df["Curs Acadèmic"].unique().tolist()),
+            "student_name": student_name,
+            "student_id": student_id,
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "source_files": source_files,
         },
         "estadisticas_globales": {
             "abandono_medio": merged_df["% Abandonament a primer curs"].mean(),

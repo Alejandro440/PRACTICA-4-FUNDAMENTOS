@@ -18,7 +18,13 @@ def test_analyze_dataset_creates_report(tmp_path):
         }
     )
     output_path = tmp_path / "analysis.json"
-    report = analyze_dataset(merged_df, output_path)
+    report = analyze_dataset(
+        merged_df,
+        output_path,
+        student_name="Alejandro Alonso Anda",
+        student_id="alejandro_alonso_anda",
+        source_files=["rendiment_estudiants.xlsx", "taxa_abandonament.xlsx"],
+    )
 
     assert output_path.exists()
     assert "metadata" in report

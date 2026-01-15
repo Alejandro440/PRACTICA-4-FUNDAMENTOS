@@ -66,9 +66,9 @@ python src/main.py -ex 1 --dataset rendiment_estudiants.xlsx
 
 ## Resultados
 
-- Dataset fusionado: `src/report/merged_dataset.csv`
-- Informe estadístico: `src/report/analisi_estadistic.json`
-- Gráfico: `src/img/evolucion_nombre_alumno.png`
+- Informe estadístico: `src/report/analisi_estadistic_alejandro_alonso_anda.json`
+- Gráfico: `src/img/evolucion_alejandro_alonso_anda.png`
+- Dataset fusionado: `src/report/merged_dataset_alejandro_alonso_anda.csv`
 
 ## Documentación (HTML)
 
