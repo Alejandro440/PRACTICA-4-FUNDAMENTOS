@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "fecha_analisis": "2025-01-01",
+    "num_registros": 100,
+    "periodo_temporal": [
+      "2018-2019",
+      "2019-2020"
+    ]
+  },
+  "estadisticas_globales": {
+    "abandono_medio": 12.5,
+    "rendimiento_medio": 85.3,
+    "correlacion_abandono_rendimiento": -0.42
+  },
+  "analisis_por_rama": {
+    "Ciències": {
+      "abandono_media": 10.2,
+      "abandono_std": 1.1,
+      "rendimiento_media": 88.4,
+      "rendimiento_std": 2.3,
+      "tendencia_abandono": "estable",
+      "pendiente_abandono": 0.0
+    }
+  },
+  "rankings": {
+    "mejor_rendimiento": "Ciències",
+    "peor_rendimiento": "Arts i humanitats",
+    "mayor_abandono": "Enginyeria",
+    "menor_abandono": "Ciències"
+  }
+}
